@@ -2,7 +2,7 @@ package edu.rosehulman.boutell.moviequotes
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings.ACTION_SETTINGS
+import android.provider.Settings
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
@@ -70,7 +70,12 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_settings -> {
-                startActivity(Intent(ACTION_SETTINGS))
+                startActivity(Intent(Settings.ACTION_SETTINGS))
+                // For others, see https://developer.android.com/reference/android/provider/Settings
+                // TODO: Instead of always starting the general settings, show a dialog
+                // with a list of settings they can open with ACTION_SOUND_SETTINGS
+                // as the first, one of your choosing for the second, and general
+                // settings as the third (and as the default)
                 true
             }
             // TODO: Create a menu item that when pressed, launches a dialog
