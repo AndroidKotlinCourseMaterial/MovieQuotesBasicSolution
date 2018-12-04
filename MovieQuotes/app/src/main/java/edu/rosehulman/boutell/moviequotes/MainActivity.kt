@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings.ACTION_SETTINGS
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener {
+//            Log.d(Constants.TAG, "Floating action button pressed")
 //            updateQuote(MovieQuote("I am your father", "The Empire Strikes Back"))
             showAddDialog()
         }
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         builder.show()
     }
 
-    fun updateQuote(movieQuote: MovieQuote) {
+    private fun updateQuote(movieQuote: MovieQuote) {
         quote_text_view.text = movieQuote.quote
         movie_text_view.text = movieQuote.movie
     }
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun changeFontSize(delta: Int) {
+    private fun changeFontSize(delta: Int) {
         // Increase the font size by delta sp
         var currentSize = quote_text_view.textSize / resources.displayMetrics.scaledDensity
         currentSize += delta
