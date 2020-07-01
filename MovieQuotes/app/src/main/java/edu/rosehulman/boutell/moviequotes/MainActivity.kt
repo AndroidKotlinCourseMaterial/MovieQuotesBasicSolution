@@ -3,8 +3,9 @@ package edu.rosehulman.boutell.moviequotes
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener {
-//            Log.d(Constants.TAG, "Floating action button pressed")
+            //            Log.d(Constants.TAG, "Floating action button pressed")
 //            updateQuote(MovieQuote("I am your father", "The Empire Strikes Back"))
             showAddDialog()
         }
@@ -30,15 +31,25 @@ class MainActivity : AppCompatActivity() {
     private fun showAddDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Add a quote")
+
+//        builder.setMessage("Your quote is -hey-")
+//        builder.setItems(arrayOf("First", "Second", "Third")) { _, k ->
+//            val quote = when (k) {
+//                0 -> "First quote"
+//                1 -> "Second quote"
+//                else -> "Third quote"
+//            }
+//            updateQuote(MovieQuote(quote, "Some Movie"))
+//        }
+
         val view = LayoutInflater.from(this).inflate(
                 R.layout.dialog_add_edit_quote, null, false)
         builder.setView(view)
         builder.setIcon(android.R.drawable.ic_input_add)
-        builder.setPositiveButton(android.R.string.ok) {
-            _, _ ->
-                val quote = view.dialog_edit_text_quote.text.toString()
-                val movie = view.dialog_edit_text_movie.text.toString()
-                updateQuote(MovieQuote(quote, movie))
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
+            val quote = view.dialog_edit_text_quote.text.toString()
+            val movie = view.dialog_edit_text_movie.text.toString()
+            updateQuote(MovieQuote(quote, movie))
         }
         builder.setNegativeButton(android.R.string.cancel, null)
         builder.show()
@@ -69,13 +80,18 @@ class MainActivity : AppCompatActivity() {
                 changeFontSize(-4)
                 true
             }
+            R.id.action_clear -> {
+                confirmClear()
+                true
+            }
             R.id.action_settings -> {
-                startActivity(Intent(Settings.ACTION_SETTINGS))
+                // startActivity(Intent(Settings.ACTION_SETTINGS))
                 // For others, see https://developer.android.com/reference/android/provider/Settings
                 // TODO: Instead of always starting the general settings, show a dialog
                 // with a list of settings they can open with ACTION_SOUND_SETTINGS
                 // as the first, one of your choosing for the second, and general
                 // settings as the third (and as the default)
+                getWhichSettings()
                 true
             }
             // TODO: Create a menu item that when pressed, launches a dialog
@@ -91,5 +107,31 @@ class MainActivity : AppCompatActivity() {
         currentSize += delta
         quote_text_view.textSize = currentSize
         movie_text_view.textSize = currentSize
+    }
+
+    private fun confirmClear() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.confirm_delete_title))
+        builder.setMessage(getString(R.string.confirm_delete_message))
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
+            updateQuote(MovieQuote("Quote", "Movie"))
+        }
+        builder.setNegativeButton(android.R.string.cancel, null)
+        builder.create().show()
+    }
+
+    private fun getWhichSettings() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.dialog_which_settings_title))
+        // For others, see https://developer.android.com/reference/android/provider/Settings
+        builder.setItems(R.array.settings_types) { _, index ->
+            var actionConstant = when (index) {
+                0 -> Settings.ACTION_SOUND_SETTINGS
+                1 -> Settings.ACTION_SEARCH_SETTINGS
+                else -> Settings.ACTION_SETTINGS
+            }
+            startActivity(Intent(actionConstant))
+        }
+        builder.create().show()
     }
 }

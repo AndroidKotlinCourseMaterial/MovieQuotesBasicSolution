@@ -22,4 +22,12 @@
         android:titleCondensed="Down"
         android:icon="@android:drawable/arrow_down_float"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_clear"
+        android:orderInCategory="20"
+        android:title="Clear"
+        android:titleCondensed="Down"
+        android:icon="@drawable/ic_clear"
+        app:showAsAction="ifRoom" />
 </menu>
